@@ -1,6 +1,5 @@
-# SDPose: Leveraging Diffusion Priors for OOD-Robust Pose Estimation
-This is the project page for SDPose, an academic paper on leveraging diffusion priors for out-of-distribution robust pose estimation.
-
+# SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation
+This is the project page for SDPose, an academic paper on exploiting diffusion priors for out-of-domain and robust pose estimation.
 
 Example project pages built using this template are:
 - https://horwitz.ai/probex
