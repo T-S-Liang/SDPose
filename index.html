@@ -24,8 +24,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>Academic Project Page</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <title>SDPose</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="logo.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="logo.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="logo.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="logo.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="logo.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="logo.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="logo.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="logo.png">
+  <link rel="shortcut icon" href="logo.png">
+  <meta name="msapplication-TileImage" content="logo.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SDPose">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
 
@@ -43,7 +60,37 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
-</head>
+  <style>
+    /* 隐藏视频控制条，避免滚动时显示 */
+    video {
+      outline: none;
+    }
+    
+    video::-webkit-media-controls {
+      display: none !important;
+    }
+    
+    video::-webkit-media-controls-enclosure {
+      display: none !important;
+    }
+    
+    /* 确保视频在移动设备上正确显示 */
+    video::-webkit-media-controls-panel {
+      display: none !important;
+    }
+    
+    /* 视频容器样式 */
+    .video-container {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* 鼠标悬停时显示控制条 */
+    .video-container:hover video::-webkit-media-controls {
+      display: flex !important;
+    }
+  </style>
+  </head>
 <body>
 
 
@@ -52,28 +99,37 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
+            <!-- Project Logo -->
+            <div class="project-logo">
+              <img src="logo.png" alt="SDPose Logo">
+            </div>
+            <h1 class="title is-1 publication-title">SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation</h1>
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
+                  <a href="mailto:sliang57@connect.hku.hk" target="_blank">Shuang Liang</a><sup>1,4</sup><sup>*</sup>,
+                  Jing He<sup>3</sup>,
+                  Chuanmeizhi Wang<sup>1</sup>,
+                  Lejun Liao<sup>2</sup>,
+                  Guo Zhang<sup>1</sup>,
+                  Yingcong Chen<sup>3,5</sup>,
+                  <a href="mailto:yuanyua@bc.edu" target="_blank">Yuan Yuan</a><sup>2</sup>
+                </span>
+              </div>
 
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block">Institution Name<br>Conferance name and year</span>
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
+                                <div class="is-size-5 publication-authors">
+                    <span class="author-block">
+                      <sup>1</sup>Rama Alpaca Technology Company <sup>2</sup>Boston College <sup>3</sup>HKUST(GZ)<br>
+                      <sup>4</sup>The University of Hong Kong <sup>5</sup>HKUST
+                    </span>
+                <span class="eql-cntrb"><small><br><sup>*</sup>Work done during an internship at Rama Alpaca Technology</small></span>
+              </div>
 
                   <div class="column has-text-centered">
                     <div class="publication-links">
                          <!-- Arxiv PDF link -->
                       <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
+                        <a href="static/pdfs/SDPose_arXiv.pdf" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
@@ -82,31 +138,33 @@
                       </a>
                     </span>
 
-                    <!-- Supplementary PDF link -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
+
 
                   <!-- Github link -->
                   <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                    <a href="#"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Code</span>
+                    <span>Code (Coming Soon)</span>
+                  </a>
+                </span>
+
+                  <!-- Hugging Face link -->
+                  <span class="link-block">
+                    <a href="#"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      🤗
+                    </span>
+                    <span>Hugging Face (Coming Soon)</span>
                   </a>
                 </span>
 
                 <!-- ArXiv abstract Link -->
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  <a href="https://arxiv.org/abs/2509.24980" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="ai ai-arxiv"></i>
@@ -123,22 +181,20 @@
 </section>
 
 
-<!-- Teaser video-->
+<!-- Teaser image-->
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <!-- Your video here -->
-        <source src="static/videos/banner_video.mp4"
-        type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+      <div class="teaser-pdf-container" style="margin-bottom: 2rem;">
+        <img src="static/images/teaser.png" alt="SDPose Teaser" style="max-width: 100%; height: auto; border-radius: 10px;">
+      </div>
+      <h2 class="subtitle">
+        <b>SDPose: OOD-robust pose via diffusion priors.</b> On stylized paintings, SDPose surpasses Sapiens and ViTPose++-H, matching SoTA on COCO and setting new records on HumanArt and COCO-OOD; yellow boxes show baseline failures.
       </h2>
     </div>
   </div>
 </section>
-<!-- End teaser video -->
+<!-- End teaser image -->
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
@@ -148,7 +204,10 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+          Pre-trained diffusion models provide rich multi-scale latent features and are emerging as powerful vision backbones. While recent works such as Marigold and Lotus adapt diffusion priors for dense prediction with strong cross-domain generalization, their potential for structured outputs (e.g., human pose estimation) remains underexplored. In this paper, we propose <b>SDPose</b>, a fine-tuning framework built upon Stable Diffusion to fully exploit pre-trained diffusion priors for human pose estimation.
+          First, rather than modifying cross-attention modules or introducing learnable embeddings, we directly predict keypoint heatmaps in the SD U-Net’s image latent space to preserve the original generative priors.
+          Second, we map these latent features into keypoint heatmaps through a lightweight convolutional pose head, which avoids disrupting the pre-trained backbone.
+          Finally, to prevent overfitting and enhance out-of-distribution robustness, we incorporate an auxiliary RGB reconstruction branch that preserves domain-transferable generative semantics. To evaluate robustness under domain shift, we further construct <b>COCO-OOD</b>, a style-transferred variant of COCO with preserved annotations. With just one-fifth of the training schedule used by Sapiens on COCO, SDPose attains parity with Sapiens-1B/2B on the COCO validation set and establishes a new state of the art on the cross-domain benchmarks HumanArt and COCO-OOD. Furthermore, we showcase SDPose as a zero-shot pose annotator for downstream controllable generation tasks, including ControlNet-based image synthesis and video generation, where it delivers qualitatively superior pose guidance.
           </p>
         </div>
       </div>
@@ -157,128 +216,435 @@
 </section>
 <!-- End paper abstract -->
 
-
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
-    </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
-
-
-
-
-<!-- Youtube video -->
+<!-- Animation Pose Estimation Demo -->
 <section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-2 has-text-centered">🎥 Demo: Animation Video Pose Estimation in the Wild</h2>
       <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- Youtube embed code here -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="column is-one-quarter">
+          <div class="video-container">
+            <video poster="" id="hongxia-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+              <source src="static/videos/hongxia.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="video-container">
+            <video poster="" id="laoba-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+              <source src="static/videos/laoba.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="video-container">
+            <video poster="" id="xiduo-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+              <source src="static/videos/xiduo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="video-container">
+            <video poster="" id="nina-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+              <source src="static/videos/nina.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End youtube video -->
+<!-- End Animation Pose Estimation Demo -->
 
 
-<!-- Video carousel -->
-<section class="hero is-small">
+<!-- Experiments Section -->
+<section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
+      <h2 class="title is-2 has-text-centered">Experiments</h2>
+      
+      <!-- Real-world Images -->
+      <div class="content">
+        <h3 class="title is-4">Qualitative Results on Real-world Images</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <img src="static/images/RealPhoto.png" alt="Real-world Images Results" style="max-width: 100%; height: auto; border-radius: 10px;">
+          </div>
         </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
+      </div>
+
+      <!-- COCO Validation Results -->
+      <div class="content">
+        <h3 class="title is-4">Quantitative Results on COCO Validation Set</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Model</strong></th>
+                    <th><strong>Pre-trained<br>Backbone</strong></th>
+                    <th><strong>Parameters</strong></th>
+                    <th><strong>Input size</strong></th>
+                    <th><strong>Train<br>dataset</strong></th>
+                    <th><strong>Train<br>epochs</strong></th>
+                    <th><strong>AP</strong></th>
+                    <th><strong>AR</strong></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sapiens-1B</td>
+                    <td>Sapiens ViT</td>
+                    <td>1.169B</td>
+                    <td>1024 × 768</td>
+                    <td>COCO</td>
+                    <td>210</td>
+                    <td>82.1</td>
+                    <td>85.9</td>
+                  </tr>
+                  <tr>
+                    <td>Sapiens-2B</td>
+                    <td>Sapiens ViT</td>
+                    <td>2.163B</td>
+                    <td>1024 × 768</td>
+                    <td>COCO</td>
+                    <td>210</td>
+                    <td><strong>82.2</strong></td>
+                    <td><strong>86.0</strong></td>
+                  </tr>
+                  <tr>
+                    <td>GenLoc</td>
+                    <td>Stable Diffusion-v1.5</td>
+                    <td>0.95B</td>
+                    <td>N/A</td>
+                    <td>COCO</td>
+                    <td>14</td>
+                    <td>77.6</td>
+                    <td>80.7</td>
+                  </tr>
+                  <tr>
+                    <td>ViTPose++-H</td>
+                    <td>ViTAE</td>
+                    <td>0.63B</td>
+                    <td>256 × 192</td>
+                    <td>Mixture*</td>
+                    <td>210</td>
+                    <td>79.4</td>
+                    <td>N/A</td>
+                  </tr>
+                  <tr style="background-color: #e8f4fd;">
+                    <td><strong>SDPose (Ours)</strong></td>
+                    <td>Stable Diffusion-v1.5</td>
+                    <td>0.95B</td>
+                    <td>1024 × 768</td>
+                    <td>COCO</td>
+                    <td>40</td>
+                    <td>81.2</td>
+                    <td>85.3</td>
+                  </tr>
+                  <tr style="background-color: #e8f4fd;">
+                    <td><strong>SDPose (Ours)</strong></td>
+                    <td>Stable Diffusion-v2</td>
+                    <td>0.95B</td>
+                    <td>1024 × 768</td>
+                    <td>COCO</td>
+                    <td>40</td>
+                    <td>81.3</td>
+                    <td>85.2</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666;">
+                <p><strong>*</strong> Mixture includes COCO, AIC, MPII, AP10K, APT36K, and WholeBody datasets.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
+      </div>
+
+      <!-- Stylized Pictures -->
+      <div class="content">
+        <h3 class="title is-4">Qualitative Comparison for Whole-Body Estimation on Stylized Pictures</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <img src="static/images/Anime.png" alt="Comparison on Stylized Paintings: Sapiens WholeBody vs. SDPose WholeBody" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>Comparison on Stylized Paintings: Sapiens Whole-Body vs. SDPose Whole-Body.</strong> All erroneous predictions are highlighted with yellow boxes. SDPose yields fewer false positives and notably better facial keypoint localization.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COCO-OOD Details -->
+      <div class="content">
+        <h3 class="title is-4">Details of COCO-OOD</h3>
+        <p class="has-text-justified">
+          To complement the HumanArt dataset and enable OOD evaluation under matched content and labels, we construct COCO-OOD by applying artistic style transfer to the original COCO images. We adopt the official CycleGAN framework to perform unpaired image-to-image translation from the COCO domain (natural photographs) to the target domain of Monet-style paintings. We use the monet2photo model provided in the CycleGAN repository, which is trained in an unsupervised manner to learn the mapping between Monet paintings and real-world photos. During conversion, all training and validation images in COCO are processed to produce style-transferred counterparts, while preserving their original human annotations (bounding boxes, keypoints). This yields an OOD variant of COCO in which the underlying scene structure is unchanged, but the texture, color palette, and brushstroke patterns are consistent with Monet's artistic style. Importantly, for fair comparison and to avoid introducing priors from large-scale pretrained diffusion models, we intentionally adopt the earlier CycleGAN framework rather than more recent style transfer methods. Such stylization introduces a significant appearance shift while keeping pose-related geometric information intact, making it suitable for robust pose estimation evaluation.
+        </p>
+        
+        <!-- COCO-OOD Download Link -->
+        <div class="has-text-centered" style="margin: 1rem 0;">
+          <a href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" target="_blank" class="button is-primary is-medium">
+            <span class="icon">
+              <i class="fas fa-download"></i>
+            </span>
+            <span>Download COCO-OOD Validation Dataset</span>
+          </a>
+        </div>
+        
+        <!-- COCO-OOD Dataset Grid Visualization -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/COCOOOD_Dataset_Grid.png" alt="COCO-OOD Dataset Visualization Grid" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>COCO-OOD Dataset Visualization.</strong> A 5×10 grid showing 50 randomly sampled images from the COCO-OOD dataset, demonstrating the diversity of Monet-style oil painting transformations applied to COCO validation images.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- COCO-OOD Detailed Visualization Figure -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/COCOOOD.png" alt="COCO-OOD visualizations with Monet-style oil painting" style="max-width: 50%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>COCO-OOD visualizations with Monet-style oil painting.</strong> We use CycleGAN to stylize COCO validation images into a Monet-like oil painting domain, creating an OOD split to evaluate pose estimation robustness under appearance shift.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OOD Benchmarks -->
+      <div class="content">
+        <h3 class="title is-4">Quantitative Comparison on OOD Benchmarks HumanArt and COCO-OOD</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Model</strong></th>
+                    <th><strong>Pre-trained<br>Backbone</strong></th>
+                    <th><strong>Parameters</strong></th>
+                    <th><strong>Train<br>epochs</strong></th>
+                    <th colspan="2" style="border-left: 2px solid #ddd; border-right: 2px solid #ddd;"><strong>HumanArt</strong></th>
+                    <th colspan="2"><strong>COCO-OOD</strong></th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th style="border-left: 2px solid #ddd;"><strong>AP</strong></th>
+                    <th style="border-right: 2px solid #ddd;"><strong>AR</strong></th>
+                    <th><strong>AP</strong></th>
+                    <th><strong>AR</strong></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sapiens-1B</td>
+                    <td>Sapiens ViT</td>
+                    <td>1.169B</td>
+                    <td>210</td>
+                    <td style="border-left: 2px solid #ddd;">64.3</td>
+                    <td style="border-right: 2px solid #ddd;">67.4</td>
+                    <td>58.8</td>
+                    <td>63.3</td>
+                  </tr>
+                  <tr>
+                    <td>Sapiens-2B</td>
+                    <td>Sapiens ViT</td>
+                    <td>2.163B</td>
+                    <td>210</td>
+                    <td style="border-left: 2px solid #ddd;">69.6</td>
+                    <td style="border-right: 2px solid #ddd;">72.2</td>
+                    <td>59.6</td>
+                    <td>64.0</td>
+                  </tr>
+                  <tr>
+                    <td>GenLoc</td>
+                    <td>Stable Diffusion-v1.5</td>
+                    <td>0.95B</td>
+                    <td>14</td>
+                    <td style="border-left: 2px solid #ddd;">67.0</td>
+                    <td style="border-right: 2px solid #ddd;">70.8</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                  </tr>
+                  <tr style="background-color: #e8f4fd;">
+                    <td><strong>SDPose (Ours)</strong></td>
+                    <td>Stable Diffusion-v2</td>
+                    <td>0.95B</td>
+                    <td>40</td>
+                    <td style="border-left: 2px solid #ddd;"><strong>71.2</strong></td>
+                    <td style="border-right: 2px solid #ddd;"><strong>73.9</strong></td>
+                    <td><strong>63.5</strong></td>
+                    <td><strong>68.2</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666;">
+                <p><em>All models are trained on COCO with an input size of 1024 × 768; full HumanArt results for other methods are in the supplementary.</em></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End video carousel -->
+<!-- End Experiments Section -->
 
+<!-- Zero-shot Downstream Applications Section -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-2 has-text-centered">Zero-shot Downstream Applications</h2>
+      
+      <!-- Better Pose-guided Image Generation -->
+      <div class="content">
+        <h3 class="title is-4">Better Pose-guided Image Generation</h3>
+        <p class="has-text-justified">
+          For human or humanoid character generation, an accurate skeleton is essential for transferring poses between characters. Traditional pose estimators often fail to precisely capture the skeletons of art-based human or humanoid characters. Our method provides a generalizable pose estimation approach that can benefit animation production. As shown in the figure below, we compare ControlNet outputs using DWPose as the baseline pose annotator. Notably, our SDPose yields more precise and detailed skeletons than DWPose, enabling reliable pose transfer and high-quality image generation for artistic characters.
+        </p>
+        
+        <!-- ControlNet Comparison Figure -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/Controlnet.png" alt="Visualization of pose-guided image generation results" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>Visualization of pose-guided image generation results.</strong> The lower images illustrate results from the baseline, which combines a pre-trained ControlNet with the DWPose estimator. In comparison, the upper images show results obtained using our SDPose as the pose annotator. Yellow boxes highlight baseline failures. Prompts, random seeds, and other settings are kept identical for fairness.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Pose-guided Video Generation -->
+      <div class="content">
+        <h3 class="title is-4">Pose-guided Video Generation</h3>
+        <p class="has-text-justified">
+          Recent advances in controlled video generation have gained significant traction. 
+          Despite the progress of video generation models in producing higher-quality outputs, 
+          extracting reliable control conditions remains critical for achieving high-quality results. 
+          As shown in the figure below, our SDPose provides more accurate poses for the driving frames, 
+          enabling more reliable pose-sequence transfer from animations to animations. Video frames are generated by Moore-Animated Anyone.
+        </p>
+        
+        <!-- Video Generation Comparison Figure -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/Video.png" alt="Qualitative comparison for pose-controlled video generation in the wild" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>Qualitative comparison for pose-controlled video generation in the wild.</strong> The first row shows the source image and frames from the driving video. The second row shows output video frames generated from the pose sequence estimated by the baseline model DWPose, while the third row shows the results guided by our SDPose. Red boxes highlight failures in the generated video, and yellow boxes highlight errors in pose estimation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Zero-shot Downstream Applications Section -->
 
-
-
-
-<!-- Paper poster -->
+<!-- Finetuning Protocol Section -->
 <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title">Poster</h2>
+      <h2 class="title is-2 has-text-centered">Finetuning Protocol</h2>
+      
+      <!-- Multi-scale Latent Features -->
+      <div class="content">
+        <h3 class="title is-4">Leveraging the Multi-scale Latent Features for Pose Estimation</h3>
+        <p class="has-text-justified">
+          In this paper, we directly leverage the multi-scale latent features of SD U-Net for the pose estimation task. 
+          The input image is encoded by the frozen SD-VAE encoder and then fed into the SD U-Net, from which we extract multi-scale features at the upsampling stage. 
+          These features serve as robust representations for downstream applications.
+        </p>
+      </div>
 
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
+      <!-- Information Bottleneck -->
+      <div class="content">
+        <h3 class="title is-4">Lightweight Heatmap Decoder Head</h3>
+        <p class="has-text-justified">
+          Stable Diffusion's U-Net outputs a 4-channel latent for the VAE through a single convolutional layer. 
+          In contrast, pose estimation requires K-channel heatmaps with K ≫ 4, making the 4-channel latent a severe information bottleneck. 
+          To address this, we replace the original 4-channel head with a lightweight heatmap decoder. 
+          The decoder consists of a deconvolution layer for upsampling, followed by two 1×1 convolutions that output K-channel heatmaps.
+          This modification removes the bottleneck and shortens the supervision path to keypoints.
+        </p>
         
+        <!-- Training Pipeline Figure -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/SDUDPTrain.png" alt="Training Pipeline of SDPose" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>Training Pipeline of SDPose.</strong> The input RGB image is first encoded into the latent space by a pre-trained VAE. The U-Net is conditioned for multi-task learning via a class embedding. When the class label is set to [0,1], the U-Net predicts the reconstructed RGB latent; when set to [1,0], it produces features for heatmap prediction. The output layer of the U-Net is task-specific: the original convolutional output layer is retained for RGB latent reconstruction, while a lightweight heatmap decoder is used to process the U-Net's intermediate features for keypoint heatmap prediction.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auxiliary RGB Reconstruction -->
+      <div class="content">
+        <h3 class="title is-4">Auxiliary RGB Reconstruction</h3>
+        <p class="has-text-justified">
+          To preserve the fine-detail representation capability of diffusion priors and to avoid overfitting to the pose estimation domain, 
+          we adopt the <em>Detail Preserver</em> strategy. 
+          Concretely, we introduce a class embedding C ∈ {C<sub>RGB</sub>, C<sub>Pose</sub>} that controls the behavior of the denoising U-Net f<sub>θ</sub>. 
+          When C<sub>RGB</sub> is provided, the network is trained to reconstruct the RGB latent z<sub>RGB</sub>; 
+          when C<sub>Pose</sub> is provided, it learns to reconstruct the ground-truth heatmap H<sub>Pose</sub>. 
+          The overall objective is:
+        </p>
+        <div class="has-text-centered" style="margin: 1rem 0;">
+          <p><strong>L = ||z<sub>RGB</sub> - f<sub>θ</sub>(z<sub>input</sub>, t, C<sub>RGB</sub>)||² + ||H<sub>Pose</sub> - f<sub>θ</sub>(z<sub>input</sub>, t, C<sub>Pose</sub>)||²</strong></p>
+        </div>
+        <p class="has-text-justified">
+          where z<sub>input</sub> is the latent encoded from the input image by the SD-VAE, and t is fixed to t=1000 in our experiments.
+        </p>
+      </div>
+
+      <!-- Inference -->
+      <div class="content">
+        <h3 class="title is-4">Inference</h3>
+        <p class="has-text-justified">
+          The input RGB image x is encoded by the SD-VAE into the latent representation z<sub>RGB</sub>. 
+          The latent diffusion U-Net then performs a single-step regression with the timestep fixed at t = 1000, 
+          using the class label C<sub>Pose</sub> to execute the pose estimation task. 
+          The text condition is disabled by feeding an empty text embedding to the U-Net.
+        </p>
+        
+        <!-- Inference Pipeline Figure -->
+        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
+          <div class="column is-four-fifths">
+            <img src="static/images/SDUDPInference.png" alt="SDPose Inference Pipeline" style="max-width: 100%; height: auto; border-radius: 10px;">
+            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
+              <p><strong>SDPose Inference Pipeline.</strong> The input RGB image is encoded by the SD-VAE into the latent representation. The latent diffusion U-Net then performs a single-step regression with the timestep fixed at t = 1000, using the class label C<sub>Pose</sub> to execute the pose estimation task. The text condition is disabled by feeding an empty text embedding to the U-Net.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-<!--End paper poster -->
-
+  </div>
+</section>
+<!-- End Finetuning Protocol Section -->
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
+      <pre><code>@misc{liang2025sdposeexploitingdiffusionpriors,
+      title={SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation}, 
+      author={Shuang Liang and Jing He and Chuanmeizhi Wang and Lejun Liao and Guo Zhang and Yingcong Chen and Yuan Yuan},
+      year={2025},
+      eprint={2509.24980},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2509.24980}, 
+}</code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
@@ -308,5 +674,51 @@
 
     <!-- End of Statcounter Code -->
 
+  <script>
+    // 优化视频播放体验
+    document.addEventListener('DOMContentLoaded', function() {
+      const videos = document.querySelectorAll('video');
+      
+      videos.forEach(video => {
+        // 确保视频静音自动播放
+        video.muted = true;
+        video.playsInline = true;
+        
+        // 避免滚动时显示控制条
+        video.addEventListener('scroll', function() {
+          video.blur();
+        });
+        
+        // 鼠标进入时播放，离开时暂停
+        video.addEventListener('mouseenter', function() {
+          if (video.paused) {
+            video.play();
+          }
+        });
+        
+        // 点击视频时切换播放/暂停
+        video.addEventListener('click', function() {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        });
+        
+        // 确保视频在视口内时播放
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              video.play().catch(e => console.log('Video autoplay prevented:', e));
+            } else {
+              video.pause();
+            }
+          });
+        }, { threshold: 0.5 });
+        
+        observer.observe(video);
+      });
+    });
+  </script>
   </body>
   </html>

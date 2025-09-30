@@ -1,11 +1,226 @@
+/* Light Theme Styles */
 body {
   font-family: 'Noto Sans', sans-serif;
+  background-color: #ffffff;
+  color: #333333;
 }
 
+/* Hero section light theme */
+.hero {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #333333;
+}
+
+.hero.is-light {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: #333333;
+}
+
+.hero.is-small {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #333333;
+}
+
+/* Section backgrounds */
+.section {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+.section.hero.is-light {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: #333333;
+}
+
+/* Title colors */
+.title {
+  color: #333333 !important;
+}
+
+.subtitle {
+  color: #666666 !important;
+}
+
+/* Button styling for light theme */
+.button.is-dark {
+  background-color: #495057;
+  border-color: #6c757d;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.button.is-dark:hover {
+  background-color: #6c757d;
+  border-color: #495057;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Link colors */
+.publication-authors a {
+  color: #007bff !important;
+}
+
+.publication-authors a:hover {
+  color: #0056b3 !important;
+  text-decoration: underline;
+}
+
+/* Footer light theme */
+.footer {
+  background-color: #f8f9fa;
+  color: #333333;
+  border-top: 1px solid #dee2e6;
+}
 
 .footer .icon-link {
+  color: #333333;
+}
+
+/* Carousel and results styling */
+.results-carousel .item {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+/* Slider pagination */
+.slider-pagination .slider-page {
+  background: #6c757d;
+}
+
+.slider-pagination .slider-page.is-active {
+  background: #007bff;
+}
+
+/* Content styling */
+.content {
+  color: #333333;
+}
+
+/* Publication venue and awards */
+.publication-venue {
+  color: #6c757d;
+}
+
+.publication-awards {
+  color: #dc3545;
+}
+
+/* EQL contribution text */
+.eql-cntrb {
+  color: #6c757d;
+}
+
+/* External link buttons hover effect */
+.external-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+}
+
+/* Additional light theme elements */
+pre, code {
+  background-color: #f8f9fa;
+  color: #333333;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+/* Table styling for light theme */
+table {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+table th {
+  background-color: #f8f9fa;
+  color: #333333;
+  border-color: #dee2e6;
+}
+
+table td {
+  border-color: #dee2e6;
+}
+
+/* Image and video containers */
+.publication-video {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+/* Teaser section specific styling */
+.teaser {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.teaser .hero-body {
+  background: transparent;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom scrollbar for light theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6c757d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #495057;
+}
+
+/* Project Logo Styling */
+.project-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.project-logo img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  filter: none;
+}
+
+.project-logo img:hover {
+  transform: translateY(-5px);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 123, 255, 0.3);
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2));
+}
+
+/* Responsive logo sizing */
+@media (max-width: 768px) {
+  .project-logo img {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-logo img {
+    max-width: 120px;
+  }
+}
+
+/* Essential styles for page functionality */
+.footer .icon-link {
     font-size: 25px;
-    color: #000;
+    color: #333333;
 }
 
 .link-block a {
@@ -17,7 +232,6 @@ body {
   font-variant: small-caps;
 }
 
-
 .teaser .hero-body {
   padding-top: 0;
   padding-bottom: 3rem;
@@ -25,26 +239,6 @@ body {
 
 .teaser {
   font-family: 'Google Sans', sans-serif;
-}
-
-
-.publication-title {
-}
-
-.publication-banner {
-  max-height: parent;
-
-}
-
-.publication-banner video {
-  position: relative;
-  left: auto;
-  top: auto;
-  transform: none;
-  object-fit: fit;
-}
-
-.publication-header .hero-body {
 }
 
 .publication-title {
@@ -56,37 +250,17 @@ body {
 }
 
 .publication-venue {
-    color: #555;
     width: fit-content;
     font-weight: bold;
 }
 
 .publication-awards {
-    color: #ff3860;
     width: fit-content;
     font-weight: bolder;
 }
 
-.publication-authors {
-}
-
-.publication-authors a {
-   color: hsl(204, 86%, 53%) !important;
-}
-
-.publication-authors a:hover {
-    text-decoration: underline;
-}
-
 .author-block {
   display: inline-block;
-}
-
-.publication-banner img {
-}
-
-.publication-authors {
-  /*color: #4286f4;*/
 }
 
 .publication-video {
@@ -94,7 +268,6 @@ body {
     width: 100%;
     height: 0;
     padding-bottom: 56.25%;
-
     overflow: hidden;
     border-radius: 10px !important;
 }
@@ -105,9 +278,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-}
-
-.publication-body img {
 }
 
 .results-carousel {
@@ -125,12 +295,119 @@ body {
   margin: 0;
 }
 
-.slider-pagination .slider-page {
-  background: #000000;
-}
-
 .eql-cntrb { 
   font-size: smaller;
+}
+
+/* Teaser PDF Container Styling */
+.teaser-pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.teaser-pdf-container iframe {
+  width: 100%;
+  height: 600px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2);
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+}
+
+.teaser-pdf-container iframe:hover {
+  box-shadow: 0 6px 25px rgba(0, 123, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive PDF sizing */
+@media (max-width: 768px) {
+  .teaser-pdf-container iframe {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .teaser-pdf-container iframe {
+    height: 300px;
+  }
+}
+
+/* BOQI Video Container Styling */
+.boqi-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.boqi-video-container video {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.boqi-video-container video:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 123, 255, 0.3);
+}
+
+/* Table Styling */
+.table-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+  overflow-x: auto;
+}
+
+.table {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  color: #333333;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.table-notes {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.table-notes p {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.table-notes code {
+  background-color: #f8f9fa;
+  color: #333333;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
 }
 
 

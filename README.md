@@ -1,5 +1,5 @@
-# Academic Project Page Template
-This is an academic paper project page template.
+# SDPose: Leveraging Diffusion Priors for OOD-Robust Pose Estimation
+This is the project page for SDPose, an academic paper on leveraging diffusion priors for out-of-distribution robust pose estimation.
 
 
 Example project pages built using this template are:
