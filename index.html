@@ -410,13 +410,31 @@
         
         <!-- COCO-OOD Download Link -->
         <div class="has-text-centered" style="margin: 1rem 0;">
-          <a href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" target="_blank" class="button is-primary is-medium">
+          <a 
+            href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" 
+            target="_blank" 
+            class="button is-primary is-medium responsive-button"
+          >
             <span class="icon">
               <i class="fas fa-download"></i>
             </span>
             <span>Download COCO-OOD Validation Dataset</span>
           </a>
         </div>
+        
+        <style>
+          @media (max-width: 768px) {
+            .responsive-button {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 90%; 
+              margin: 0 auto;
+              white-space: normal;
+              text-align: center;
+            }
+          }
+        </style>
         
         <!-- COCO-OOD Dataset Grid Visualization -->
         <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
