@@ -1,762 +1,533 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="DESCRIPTION META TAG">
-  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
-  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
-  <meta property="og:url" content="URL OF THE WEBSITE"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
-
-
-  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
-  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <meta name="description" content="SDPose repurposes multi-level Stable Diffusion U-Net features for out-of-domain and robust human pose estimation, and introduces the COCO-OOD benchmark. WACV 2027.">
+  <meta property="og:title" content="SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation"/>
+  <meta property="og:description" content="Multi-level SD U-Net features, feature aggregation, and prior-preserving fine-tuning for cross-domain pose estimation. WACV 2027."/>
+  <meta property="og:url" content="https://t-s-liang.github.io/SDPose/"/>
+  <meta property="og:image" content="https://t-s-liang.github.io/SDPose/static/images/Teaser.jpg"/>
 
-  <title>SDPose</title>
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="logo.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="logo.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="logo.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="logo.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="logo.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="logo.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="logo.png">
-  <link rel="apple-touch-icon" sizes="57x57" href="logo.png">
-  <link rel="shortcut icon" href="logo.png">
-  <meta name="msapplication-TileImage" content="logo.png">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SDPose">
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
+  <meta name="twitter:title" content="SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation">
+  <meta name="twitter:description" content="Diffusion priors for out-of-domain and robust human pose estimation. WACV 2027.">
+  <meta name="twitter:image" content="https://t-s-liang.github.io/SDPose/static/images/Teaser.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="SDPose, pose estimation, diffusion priors, Stable Diffusion, out-of-domain, COCO-OOD, HumanArt, WACV 2027">
+
+  <title>SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation</title>
+  <link rel="icon" type="image/png" href="static/images/sdpose_logo.png">
+  <link rel="apple-touch-icon" href="static/images/sdpose_logo.png">
+  <meta name="theme-color" content="#003D33">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css?v=20261015">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/bulma-carousel.min.js"></script>
-  <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
-  <style>
-    /* 隐藏视频控制条，避免滚动时显示 */
-    video {
-      outline: none;
-    }
-    
-    video::-webkit-media-controls {
-      display: none !important;
-    }
-    
-    video::-webkit-media-controls-enclosure {
-      display: none !important;
-    }
-    
-    /* 确保视频在移动设备上正确显示 */
-    video::-webkit-media-controls-panel {
-      display: none !important;
-    }
-    
-    /* 视频容器样式 */
-    .video-container {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    /* 鼠标悬停时显示控制条 */
-    .video-container:hover video::-webkit-media-controls {
-      display: flex !important;
-    }
-  </style>
-  </head>
+</head>
 <body>
-
 
   <section class="hero">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <!-- Project Logo -->
             <div class="project-logo">
-              <img src="logo.png" alt="SDPose Logo">
+              <img src="static/images/sdpose_logo.png" alt="SDPose logo" width="200" height="157">
             </div>
             <h1 class="title is-1 publication-title">SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation</h1>
+            <div class="publication-venue">
+              <span>WACV 2027</span>
+              <a class="venue-workshop" href="https://human-motion-world-model.github.io/" target="_blank" rel="noopener noreferrer" title="Non-archival presentation">ECCV 2026 HuMoWM Workshop</a>
+            </div>
             <div class="is-size-5 publication-authors">
-              <!-- Paper authors -->
               <span class="author-block">
-                  <a href="mailto:sliang57@connect.hku.hk" target="_blank">Shuang Liang</a><sup>1,4</sup><sup>*</sup>,
-                  Jing He<sup>3</sup>,
-                  Chuanmeizhi Wang<sup>1</sup>,
-                  Lejun Liao<sup>2</sup>,
-                  Guo Zhang<sup>1</sup>,
-                  Yingcong Chen<sup>3,5</sup>,
-                  <a href="mailto:yuanyua@bc.edu" target="_blank">Yuan Yuan</a><sup>2</sup>
-                </span>
-              </div>
+                <a href="mailto:sliang57@connect.hku.hk" target="_blank" rel="noopener">Shuang Liang</a><sup>1,4,*</sup>,</span>
+              <span class="author-block">
+                Jing He<sup>3</sup>,</span>
+              <span class="author-block">
+                Chuanmeizhi Wang<sup>1</sup>,</span>
+              <span class="author-block">
+                Lejun Liao<sup>2</sup>,</span>
+              <span class="author-block">
+                Guo Zhang<sup>1,5</sup>,</span>
+              <span class="author-block">
+                Yingcong Chen<sup>3,6</sup>,</span>
+              <span class="author-block">
+                <a href="mailto:yuanyua@bc.edu" target="_blank" rel="noopener">Yuan Yuan</a><sup>2,&dagger;</sup>
+              </span>
+            </div>
 
-              <div class="is-size-5 publication-authors">
-                    <span class="author-block">
-                      <sup>1</sup>Rama Alpaca Technology Company <sup>2</sup>Boston College <sup>3</sup>HKUST(GZ)<br>
-                      <sup>4</sup>The University of Hong Kong <sup>5</sup>HKUST
-                    </span>
-                <span class="eql-cntrb"><small><br><sup>*</sup>Work done during an internship at Rama Alpaca Technology</small></span>
-              </div>
+            <div class="is-size-5 publication-authors affiliation-block">
+              <span class="author-block">
+                <sup>1</sup>Rama Alpaca Technology &nbsp; <sup>2</sup>Boston College &nbsp; <sup>3</sup>HKUST (GZ)<br>
+                <sup>4</sup>The University of Hong Kong &nbsp; <sup>5</sup>Research Institute of Tsinghua University in Shenzhen &nbsp; <sup>6</sup>HKUST
+              </span>
+              <span class="eql-cntrb"><small><br><sup>*</sup>Work done during an internship at Rama Alpaca Technology. <sup>&dagger;</sup>Corresponding author.</small></span>
+            </div>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                  <!-- Github link -->
-                  <span class="link-block">
-                    <a href="https://github.com/T-S-Liang/SDPose-OOD"
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2509.24980" target="_blank" rel="noopener noreferrer"
                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/T-S-Liang/SDPose-OOD" target="_blank" rel="noopener noreferrer"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
                     <span>Code</span>
                   </a>
                 </span>
-
-                <!-- ArXiv abstract Link -->
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/2509.24980" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-                </span>
-
-                <!-- Hugging Face Space Demo-->
-                  <span class="link-block">
-                    <a href="https://huggingface.co/spaces/teemosliang/SDPose"
+                  <a href="https://huggingface.co/spaces/teemosliang/SDPose" target="_blank" rel="noopener noreferrer"
                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      🤗
-                    </span>
-                    <span>HF Space Demo</span>
+                    <span class="icon">&#129303;</span>
+                    <span>Demo</span>
                   </a>
                 </span>
-
-                <!-- Hugging Face Model (Body) -->
-                  <span class="link-block">
-                    <a href="https://huggingface.co/teemosliang/SDPose-Body"
+                <span class="link-block">
+                  <a href="https://huggingface.co/teemosliang/SDPose-Body" target="_blank" rel="noopener noreferrer"
                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      🤗
-                    </span>
+                    <span class="icon">&#129303;</span>
                     <span>Model (Body)</span>
                   </a>
                 </span>
-
-                <!-- Hugging Face Model (Wholebody) -->
-                  <span class="link-block">
-                    <a href="https://huggingface.co/teemosliang/SDPose-Wholebody"
+                <span class="link-block">
+                  <a href="https://huggingface.co/teemosliang/SDPose-Wholebody" target="_blank" rel="noopener noreferrer"
                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      🤗
-                    </span>
+                    <span class="icon">&#129303;</span>
                     <span>Model (Wholebody)</span>
                   </a>
                 </span>
-
-                <!-- ComfyUI Node (SDPose-OOD) -->
-                  <span class="link-block">
-                    <a href="https://github.com/judian17/ComfyUI-SDPose-OOD" target="_blank" rel="noopener noreferrer"
-                       class="external-link button is-normal is-rounded is-dark">
-                       <img class="icon" style="font-size:16px" src="static/images/c_ui.svg">
-                      </img>
-                      <span>&#160;ComfyUI</span>
-                    </a>
+                <span class="link-block">
+                  <a href="https://docs.comfy.org/tutorials/utility/pose-detection-sdpose" target="_blank" rel="noopener noreferrer"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <img class="icon" src="static/images/c_ui.svg" alt="">
+                    <span>&#160;ComfyUI (Official)</span>
+                  </a>
                 </span>
-
+                <span class="link-block">
+                  <a href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" target="_blank" rel="noopener noreferrer"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-database"></i></span>
+                    <span>COCO-OOD</span>
+                  </a>
+                </span>
+              </div>
+              <p class="is-size-6 has-text-centered" style="margin-top: 0.75rem;">
+                Paper: <a href="https://arxiv.org/pdf/2509.24980" target="_blank" rel="noopener noreferrer">arxiv.org/pdf/2509.24980</a>
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- Teaser image-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <div class="teaser-pdf-container" style="margin-bottom: 2rem;">
-        <img src="static/images/Teaser.png" alt="SDPose Teaser" style="max-width: 100%; height: auto; border-radius: 10px;">
+  <section class="hero teaser">
+    <div class="container" style="max-width: 1000px;">
+      <div class="hero-body">
+        <figure class="paper-figure" style="margin-top: 0;">
+          <img src="static/images/Teaser.jpg" alt="SDPose versus Sapiens-1B and ViTPose++-H on stylized paintings and a humanoid robot">
+          <figcaption>
+            <strong>SDPose for OOD pose estimation.</strong> On stylized paintings and images of humanoid robots, SDPose produces more accurate predictions than Sapiens and ViTPose++-H. Baseline failure cases are highlighted in <em>yellow boxes</em>.
+          </figcaption>
+        </figure>
       </div>
-      <h2 class="subtitle">
-        <b>SDPose: OOD-robust pose via diffusion priors.</b> On stylized paintings, SDPose surpasses Sapiens and ViTPose++-H, matching SoTA on COCO and setting new records on HumanArt and COCO-OOD; yellow boxes show baseline failures.
-      </h2>
     </div>
-  </div>
-</section>
-<!-- End teaser image -->
+  </section>
 
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-          Pre-trained diffusion models provide rich multi-scale latent features and are emerging as powerful vision backbones. While recent works such as Marigold and Lotus adapt diffusion priors for dense prediction with strong cross-domain generalization, their potential for structured outputs (e.g., human pose estimation) remains underexplored. In this paper, we propose <b>SDPose</b>, a fine-tuning framework built upon Stable Diffusion to fully exploit pre-trained diffusion priors for human pose estimation.
-          First, rather than modifying cross-attention modules or introducing learnable embeddings, we directly predict keypoint heatmaps in the SD U-Net’s image latent space to preserve the original generative priors.
-          Second, we map these latent features into keypoint heatmaps through a lightweight convolutional pose head, which avoids disrupting the pre-trained backbone.
-          Finally, to prevent overfitting and enhance out-of-distribution robustness, we incorporate an auxiliary RGB reconstruction branch that preserves domain-transferable generative semantics. To evaluate robustness under domain shift, we further construct <b>COCO-OOD</b>, a style-transferred variant of COCO with preserved annotations. With just one-fifth of the training schedule used by Sapiens on COCO, SDPose attains parity with Sapiens-1B/2B on the COCO validation set and establishes a new state of the art on the cross-domain benchmarks HumanArt and COCO-OOD. Furthermore, we showcase SDPose as a zero-shot pose annotator for downstream controllable generation tasks, including ControlNet-based image synthesis and video generation, where it delivers qualitatively superior pose guidance.
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Pre-trained diffusion models provide rich latent features across U-Net levels and are emerging as powerful vision backbones. While prior works such as Marigold and Lotus repurpose diffusion priors for dense geometric perception tasks such as depth and surface normal estimation, their potential for cross-domain human pose estimation remains largely unexplored. Through a systematic analysis of latent features from different upsampling levels of the Stable Diffusion U-Net, we identify the levels that deliver the strongest robustness and cross-domain generalization for pose estimation. Building on these findings, we propose <b>SDPose</b>, which (i) extracts U-Net features from the selected upsampling blocks, (ii) fuses them with a lightweight feature aggregation module to form a robust representation, and (iii) jointly optimizes keypoint heatmap supervision with an auxiliary latent reconstruction loss to regularize training and preserve the pre-trained generative prior. To evaluate cross-domain generalization and robustness, we construct <b>COCO-OOD</b>, a COCO-based benchmark with four subsets: three style-transferred splits to assess domain shift, and one corruption split (noise, weather, digital artifacts, and blur) to test robustness. With a shorter fine-tuning schedule, SDPose achieves performance comparable to Sapiens on COCO, surpasses Sapiens-1B on COCO-WholeBody, and establishes new state-of-the-art results on HumanArt and COCO-OOD.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-small">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title is-3 has-text-centered">Demo: Animation Video Pose Estimation in the Wild</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-one-quarter">
+            <div class="video-container">
+              <video autoplay muted loop playsinline><source src="static/videos/hongxia.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="column is-one-quarter">
+            <div class="video-container">
+              <video autoplay muted loop playsinline><source src="static/videos/laoba.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="column is-one-quarter">
+            <div class="video-container">
+              <video autoplay muted loop playsinline><source src="static/videos/xiduo.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="column is-one-quarter">
+            <div class="video-container">
+              <video autoplay muted loop playsinline><source src="static/videos/nina.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light" id="Method">
+    <div class="hero-body">
+      <div class="container" style="max-width: 1100px;">
+        <h2 class="title is-2 has-text-centered">Method</h2>
+
+        <div class="content section-text">
+          <h3 class="title is-4">Multi-level SD Latent Features</h3>
+          <p class="has-text-justified">
+            The input image is encoded by a frozen SD-VAE encoder and fed into the SD U-Net. From the U-Net upsampling hierarchy, we denote candidate features from the last four upsampling blocks as {F<sub>1</sub>, F<sub>2</sub>, F<sub>3</sub>, F<sub>4</sub>} (from shallower to deeper). Rather than using all levels, a level-wise study identifies the features that are both discriminative for keypoint prediction and stable under style shifts, and SDPose keeps the subset {F<sub>1</sub>, F<sub>2</sub>, F<sub>3</sub>}.
+          </p>
+
+          <figure class="paper-figure">
+            <img src="static/images/SDUDPTrain.png" alt="Training pipeline of SDPose">
+            <figcaption>
+              <strong>Training pipeline of SDPose.</strong> The input image x is encoded by a pre-trained SD-VAE into Z<sub>RGB</sub>. A shared latent diffusion U-Net f<sub>&theta;</sub> is conditioned by a task/class embedding C (text prompt disabled). With C<sub>RGB</sub>, the model reconstructs Z<sub>RGB</sub> via an &ell;<sub>2</sub> latent reconstruction loss. With C<sub>Pose</sub>, we extract selected multi-level U-Net features, perform feature aggregation, and predict keypoint heatmaps supervised by a heatmap MSE loss.
+            </figcaption>
+          </figure>
+
+          <h3 class="title is-4" style="margin-top: 2.5rem;">Feature Aggregation</h3>
+          <p class="has-text-justified">
+            Deeper features tend to be more stable under style shifts, whereas shallower features retain finer spatial details for localization. A lightweight CSPNeXt-style PAFPN performs top-down and bottom-up fusion across {F<sub>1</sub>, F<sub>2</sub>, F<sub>3</sub>}, and the fused feature is forwarded to a lightweight convolutional head that predicts keypoint heatmaps.
+          </p>
+
+          <figure class="paper-figure">
+            <img src="static/images/Fusion.png" alt="Feature aggregation module">
+            <figcaption>
+              <strong>Feature aggregation module.</strong> Hierarchical features are fused through a CSP PAFPN block. Deep features are upsampled via PixelShuffle to align with shallow features for final heatmap prediction.
+            </figcaption>
+          </figure>
+
+          <h3 class="title is-4" style="margin-top: 2.5rem;">Prior-preserving Auxiliary Reconstruction</h3>
+          <p class="has-text-justified">
+            To preserve the generative priors and mitigate overfitting to the pose domain, we adopt the <em>Detail Preserver</em> strategy with an auxiliary RGB latent reconstruction objective. A task/class embedding C &isin; {C<sub>RGB</sub>, C<sub>Pose</sub>} switches the behavior of the shared denoising U-Net f<sub>&theta;</sub>. The overall objective is
+          </p>
+          <p class="loss-formula">
+            <b>&Lscr; = &#8214;Z<sub>RGB</sub> &minus; f<sub>&theta;</sub>(Z<sub>RGB</sub>, t, C<sub>RGB</sub>)&#8214;<sub>2</sub><sup>2</sup> + &#8214;H<sub>Pose</sub> &minus; H<sup>P</sup><sub>Pose</sub>&#8214;<sub>2</sub><sup>2</sup></b>
+          </p>
+          <p class="has-text-justified">
+            We adopt a deterministic single-step setting with the timestep fixed to t = 1000. At inference, the image latent Z<sub>RGB</sub> goes through one U-Net forward pass with the class label C<sub>Pose</sub> and an empty text embedding.
           </p>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End paper abstract -->
+  </section>
 
-<!-- Animation Pose Estimation Demo -->
-<section class="hero is-small is-light">
-  <div class="container is-max-desktop">
+  <section class="hero is-small" id="Analysis">
     <div class="hero-body">
-      <h2 class="title is-2 has-text-centered">🎥 Demo: Animation Video Pose Estimation in the Wild</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-one-quarter">
-          <div class="video-container">
-            <video poster="" id="hongxia-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
-              <source src="static/videos/hongxia.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-        <div class="column is-one-quarter">
-          <div class="video-container">
-            <video poster="" id="laoba-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
-              <source src="static/videos/laoba.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-        <div class="column is-one-quarter">
-          <div class="video-container">
-            <video poster="" id="xiduo-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
-              <source src="static/videos/xiduo.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-        <div class="column is-one-quarter">
-          <div class="video-container">
-            <video poster="" id="nina-video" autoplay muted loop playsinline style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
-              <source src="static/videos/nina.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End Animation Pose Estimation Demo -->
+      <div class="container" style="max-width: 1100px;">
+        <h2 class="title is-2 has-text-centered">Multi-level Analysis of SD U-Net Features</h2>
 
+        <div class="content section-text">
+          <p class="has-text-justified">
+            Using t-SNE and silhouette scores on 1,200 person crops (300 COCO instances with three COCO-OOD style variants), pre-trained Sapiens exhibits strong style-driven clustering, while SD U-Net features show much weaker style separation and increasingly stronger person-instance coherence in deeper upsampling blocks. After pose fine-tuning, the mid-level SDPose blocks (F<sub>2</sub>&ndash;F<sub>3</sub>) reach the highest instance coherence while keeping style silhouettes close to zero.
+          </p>
 
-<!-- Experiments Section -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-2 has-text-centered">Experiments</h2>
-      
-      <!-- Real-world Images -->
-      <div class="content">
-        <h3 class="title is-4">Qualitative Results on Real-world Images</h3>
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <img src="static/images/RealPhoto.png" alt="Real-world Images Results" style="max-width: 100%; height: auto; border-radius: 10px;">
-          </div>
-        </div>
-      </div>
+          <figure class="paper-figure">
+            <img src="static/images/LatentSpace.png" alt="t-SNE visualization of Sapiens and SD U-Net features">
+            <figcaption>
+              <strong>t-SNE visualization of features from Sapiens ViT, Stable Diffusion U-Net blocks, Sapiens Pose, and SDPose across four visual domains.</strong> Each point corresponds to an image sample; colors represent person instances and marker shapes denote artistic styles.
+            </figcaption>
+          </figure>
 
-      <!-- COCO Validation Results -->
-      <div class="content">
-        <h3 class="title is-4">Quantitative Results on COCO Validation Set</h3>
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <div class="table-container">
-              <table class="table is-fullwidth is-striped">
-                <thead>
-                  <tr>
-                    <th><strong>Model</strong></th>
-                    <th><strong>Pre-trained<br>Backbone</strong></th>
-                    <th><strong>Parameters</strong></th>
-                    <th><strong>Input size</strong></th>
-                    <th><strong>Train<br>dataset</strong></th>
-                    <th><strong>Train<br>epochs</strong></th>
-                    <th><strong>AP</strong></th>
-                    <th><strong>AR</strong></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Sapiens-1B</td>
-                    <td>Sapiens ViT</td>
-                    <td>1.169B</td>
-                    <td>1024 × 768</td>
-                    <td>COCO</td>
-                    <td>210</td>
-                    <td>82.1</td>
-                    <td>85.9</td>
-                  </tr>
-                  <tr>
-                    <td>Sapiens-2B</td>
-                    <td>Sapiens ViT</td>
-                    <td>2.163B</td>
-                    <td>1024 × 768</td>
-                    <td>COCO</td>
-                    <td>210</td>
-                    <td><strong>82.2</strong></td>
-                    <td><strong>86.0</strong></td>
-                  </tr>
-                  <tr>
-                    <td>GenLoc</td>
-                    <td>Stable Diffusion-v1.5</td>
-                    <td>0.95B</td>
-                    <td>N/A</td>
-                    <td>COCO</td>
-                    <td>14</td>
-                    <td>77.6</td>
-                    <td>80.7</td>
-                  </tr>
-                  <tr>
-                    <td>ViTPose++-H</td>
-                    <td>ViTAE</td>
-                    <td>0.63B</td>
-                    <td>256 × 192</td>
-                    <td>Mixture*</td>
-                    <td>210</td>
-                    <td>79.4</td>
-                    <td>N/A</td>
-                  </tr>
-                  <tr style="background-color: #e8f4fd;">
-                    <td><strong>SDPose (Ours)</strong></td>
-                    <td>Stable Diffusion-v1.5</td>
-                    <td>0.95B</td>
-                    <td>1024 × 768</td>
-                    <td>COCO</td>
-                    <td>40</td>
-                    <td>81.2</td>
-                    <td>85.3</td>
-                  </tr>
-                  <tr style="background-color: #e8f4fd;">
-                    <td><strong>SDPose (Ours)</strong></td>
-                    <td>Stable Diffusion-v2</td>
-                    <td>0.95B</td>
-                    <td>1024 × 768</td>
-                    <td>COCO</td>
-                    <td>40</td>
-                    <td>81.3</td>
-                    <td>85.2</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666;">
-                <p><strong>*</strong> Mixture includes COCO, AIC, MPII, AP10K, APT36K, and WholeBody datasets.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <p class="has-text-justified" style="margin-top: 2rem;">
+            The single-level ablations agree: F<sub>1</sub> gives the best in-domain localization, F<sub>2</sub> is the most robust under pure style shift, and F<sub>4</sub> is too coarse. SDPose therefore fuses {F<sub>1</sub>, F<sub>2</sub>, F<sub>3</sub>}, and the gain from aggregation is largest for whole-body estimation, where hands and face need both global context and local detail.
+          </p>
 
-      <!-- Stylized Pictures -->
-      <div class="content">
-        <h3 class="title is-4">Qualitative Comparison for Whole-Body Estimation on Stylized Pictures</h3>
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <img src="static/images/Anime.png" alt="Comparison on Stylized Paintings: Sapiens WholeBody vs. SDPose WholeBody" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>Comparison on Stylized Paintings: Sapiens Whole-Body vs. SDPose Whole-Body.</strong> All erroneous predictions are highlighted with yellow boxes. SDPose yields fewer false positives and notably better facial keypoint localization.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- COCO-OOD Details -->
-      <div class="content">
-        <h3 class="title is-4">Details of COCO-OOD</h3>
-        <p class="has-text-justified">
-          To complement the HumanArt dataset and enable OOD evaluation under matched content and labels, we construct COCO-OOD by applying artistic style transfer to the original COCO images. We adopt the official StyTR2 and CycleGAN framework to perform unpaired image-to-image translation from the COCO domain (natural photographs) to the target domain of Ukiyo-e and Monet-style paintings. During conversion, all validation images in COCO are processed to produce style-transferred counterparts, while preserving their original human annotations (bounding boxes, keypoints). This yields an OOD variant of COCO in which the underlying scene structure is unchanged, but the texture, color palette, and brushstroke patterns are consistent with artistic style. Importantly, for fair comparison and to avoid introducing priors from large-scale pretrained diffusion models, we intentionally adopt the earlier StyTR2 and CycleGAN framework rather than more recent style transfer methods. Such stylization introduces a significant appearance shift while keeping pose-related geometric information intact, making it suitable for robust pose estimation evaluation.
-        </p>
-        
-        <!-- COCO-OOD Download Link -->
-        <div class="has-text-centered" style="margin: 1rem 0;">
-          <a 
-            href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" 
-            target="_blank" 
-            class="button is-primary is-medium responsive-button"
-          >
-            <span class="icon">
-              <i class="fas fa-download"></i>
-            </span>
-            <span>Download COCO-OOD Validation Dataset</span>
-          </a>
-        </div>
-        
-        <style>
-          @media (max-width: 768px) {
-            .responsive-button {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 90%; 
-              margin: 0 auto;
-              white-space: normal;
-              text-align: center;
-            }
-          }
-        </style>
-        
-        <!-- COCO-OOD Dataset Grid Visualization -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/COCOOOD_Dataset_Grid.png" alt="COCO-OOD Dataset Visualization Grid" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>COCO-OOD Dataset Visualization.</strong> A 5×10 grid showing 50 randomly sampled images from the COCO-OOD dataset, demonstrating the diversity of Monet-style oil painting transformations applied to COCO validation images.</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- COCO-OOD Detailed Visualization Figure -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/COCOOOD.png" alt="COCO-OOD visualizations with Monet-style oil painting" style="max-width: 50%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>COCO-OOD visualizations with Monet-style oil painting.</strong> We use CycleGAN to stylize COCO validation images into a Monet-like oil painting domain, creating an OOD split to evaluate pose estimation robustness under appearance shift.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- OOD Benchmarks -->
-      <div class="content">
-        <h3 class="title is-4">Quantitative Comparison on OOD Benchmarks HumanArt and COCO-OOD</h3>
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <div class="table-container">
-              <table class="table is-fullwidth is-striped">
-                <thead>
-                  <tr>
-                    <th><strong>Model</strong></th>
-                    <th><strong>Pre-trained<br>Backbone</strong></th>
-                    <th><strong>Parameters</strong></th>
-                    <th><strong>Train<br>epochs</strong></th>
-                    <th colspan="2" style="border-left: 2px solid #ddd; border-right: 2px solid #ddd;"><strong>HumanArt</strong></th>
-                    <th colspan="2"><strong>COCO-OOD</strong></th>
-                  </tr>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th style="border-left: 2px solid #ddd;"><strong>AP</strong></th>
-                    <th style="border-right: 2px solid #ddd;"><strong>AR</strong></th>
-                    <th><strong>AP</strong></th>
-                    <th><strong>AR</strong></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Sapiens-1B</td>
-                    <td>Sapiens ViT</td>
-                    <td>1.169B</td>
-                    <td>210</td>
-                    <td style="border-left: 2px solid #ddd;">64.3</td>
-                    <td style="border-right: 2px solid #ddd;">67.4</td>
-                    <td>58.8</td>
-                    <td>63.3</td>
-                  </tr>
-                  <tr>
-                    <td>Sapiens-2B</td>
-                    <td>Sapiens ViT</td>
-                    <td>2.163B</td>
-                    <td>210</td>
-                    <td style="border-left: 2px solid #ddd;">69.6</td>
-                    <td style="border-right: 2px solid #ddd;">72.2</td>
-                    <td>59.6</td>
-                    <td>64.0</td>
-                  </tr>
-                  <tr>
-                    <td>GenLoc</td>
-                    <td>Stable Diffusion-v1.5</td>
-                    <td>0.95B</td>
-                    <td>14</td>
-                    <td style="border-left: 2px solid #ddd;">67.0</td>
-                    <td style="border-right: 2px solid #ddd;">70.8</td>
-                    <td>N/A</td>
-                    <td>N/A</td>
-                  </tr>
-                  <tr style="background-color: #e8f4fd;">
-                    <td><strong>SDPose (Ours)</strong></td>
-                    <td>Stable Diffusion-v2</td>
-                    <td>0.95B</td>
-                    <td>40</td>
-                    <td style="border-left: 2px solid #ddd;"><strong>71.2</strong></td>
-                    <td style="border-right: 2px solid #ddd;"><strong>73.9</strong></td>
-                    <td><strong>63.5</strong></td>
-                    <td><strong>68.2</strong></td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666;">
-                <p><em>All models are trained on COCO with an input size of 1024 × 768; full HumanArt results for other methods are in the supplementary.</em></p>
-              </div>
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th rowspan="2">Model Variant</th>
+                  <th rowspan="2">Ablation Setting</th>
+                  <th colspan="2">COCO</th>
+                  <th colspan="2">HumanArt</th>
+                  <th colspan="2">COCO-OOD Monet</th>
+                </tr>
+                <tr>
+                  <th>AP</th><th>AR</th><th>AP</th><th>AR</th><th>AP</th><th>AR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="7" class="group-label">SDPose-Body</td>
+                  <td>Single Feature Baseline (Last Block F<sub>1</sub>)</td>
+                  <td><b>81.3</b></td><td>85.2</td><td>71.2</td><td>73.9</td><td>63.5</td><td>68.2</td>
+                </tr>
+                <tr class="ours">
+                  <td>+ Feature Aggregation Module</td>
+                  <td>81.2 <span class="delta">(-0.1)</span></td><td><b>85.3</b> <span class="delta">(+0.1)</span></td><td><b>71.8</b> <span class="delta">(+0.6)</span></td><td><b>74.6</b> <span class="delta">(+0.7)</span></td><td><b>64.0</b> <span class="delta">(+0.5)</span></td><td><b>68.7</b> <span class="delta">(+0.5)</span></td>
+                </tr>
+                <tr>
+                  <td>w/o RGB Reconstruction</td>
+                  <td>80.8 <span class="delta">(-0.5)</span></td><td>84.9 <span class="delta">(-0.3)</span></td><td>69.8 <span class="delta">(-1.4)</span></td><td>72.6 <span class="delta">(-1.3)</span></td><td>62.5 <span class="delta">(-1.0)</span></td><td>67.3 <span class="delta">(-0.9)</span></td>
+                </tr>
+                <tr>
+                  <td>w/o Diffusion Priors</td>
+                  <td>74.9 <span class="delta">(-6.4)</span></td><td>79.4 <span class="delta">(-5.8)</span></td><td>53.8 <span class="delta">(-17.4)</span></td><td>58.0 <span class="delta">(-15.9)</span></td><td>52.7 <span class="delta">(-10.8)</span></td><td>57.9 <span class="delta">(-10.3)</span></td>
+                </tr>
+                <tr>
+                  <td>Second-to-last Block (F<sub>2</sub>)</td>
+                  <td>81.1</td><td>85.0</td><td>70.4</td><td>73.3</td><td><b>64.3</b></td><td><b>68.9</b></td>
+                </tr>
+                <tr>
+                  <td>Third-to-last Block (F<sub>3</sub>)</td>
+                  <td>81.0</td><td>85.1</td><td>70.6</td><td>73.3</td><td>63.5</td><td>68.2</td>
+                </tr>
+                <tr>
+                  <td>Fourth-to-last Block (F<sub>4</sub>)</td>
+                  <td>79.2</td><td>83.4</td><td>65.0</td><td>68.1</td><td>58.1</td><td>62.8</td>
+                </tr>
+                <tr>
+                  <td rowspan="5" class="group-label">SDPose-Wholebody</td>
+                  <td>Single Feature Baseline (Last Block F<sub>1</sub>)</td>
+                  <td>70.5</td><td>77.5</td><td>N/A</td><td>N/A</td><td>44.7</td><td>53.0</td>
+                </tr>
+                <tr class="ours">
+                  <td>+ Feature Aggregation Module</td>
+                  <td><b>72.8</b> <span class="delta">(+2.3)</span></td><td><b>79.4</b> <span class="delta">(+1.9)</span></td><td>N/A</td><td>N/A</td><td><b>48.4</b> <span class="delta">(+3.7)</span></td><td><b>56.0</b> <span class="delta">(+3.0)</span></td>
+                </tr>
+                <tr>
+                  <td>Second-to-last Block (F<sub>2</sub>)</td>
+                  <td>71.5</td><td>78.4</td><td>N/A</td><td>N/A</td><td>46.6</td><td>54.8</td>
+                </tr>
+                <tr>
+                  <td>Third-to-last Block (F<sub>3</sub>)</td>
+                  <td>70.4</td><td>77.6</td><td>N/A</td><td>N/A</td><td>45.5</td><td>53.8</td>
+                </tr>
+                <tr>
+                  <td>Fourth-to-last Block (F<sub>4</sub>)</td>
+                  <td>64.6</td><td>72.1</td><td>N/A</td><td>N/A</td><td>37.1</td><td>45.4</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-notes">
+              <p><strong>Ablation studies on diffusion priors, RGB reconstruction, U-Net feature selection, and representation aggregation.</strong> All experiments are trained on COCO with 40 epochs (body, 17 keypoints) or 42 epochs (wholebody, 133 keypoints).</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End Experiments Section -->
+  </section>
 
-<!-- Zero-shot Downstream Applications Section -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-2 has-text-centered">Zero-shot Downstream Applications</h2>
-      
-      <!-- Better Pose-guided Image Generation -->
-      <div class="content">
-        <h3 class="title is-4">Better Pose-guided Image Generation</h3>
-        <p class="has-text-justified">
-          For human or humanoid character generation, an accurate skeleton is essential for transferring poses between characters. Traditional pose estimators often fail to precisely capture the skeletons of art-based human or humanoid characters. Our method provides a generalizable pose estimation approach that can benefit animation production. As shown in the figure below, we compare ControlNet outputs using DWPose as the baseline pose annotator. Notably, our SDPose yields more precise and detailed skeletons than DWPose, enabling reliable pose transfer and high-quality image generation for artistic characters.
-        </p>
-        
-        <!-- ControlNet Comparison Figure -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/Controlnet.png" alt="Visualization of pose-guided image generation results" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>Visualization of pose-guided image generation results.</strong> The lower images illustrate results from the baseline, which combines a pre-trained ControlNet with the DWPose estimator. In comparison, the upper images show results obtained using our SDPose as the pose annotator. Yellow boxes highlight baseline failures. Prompts, random seeds, and other settings are kept identical for fairness.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <section class="hero is-light" id="COCO-OOD">
+    <div class="hero-body">
+      <div class="container" style="max-width: 1100px;">
+        <h2 class="title is-2 has-text-centered">COCO-OOD Benchmark</h2>
 
-      <!-- Pose-guided Video Generation -->
-      <div class="content">
-        <h3 class="title is-4">Pose-guided Video Generation</h3>
-        <p class="has-text-justified">
-          Recent advances in controlled video generation have gained significant traction. 
-          Despite the progress of video generation models in producing higher-quality outputs, 
-          extracting reliable control conditions remains critical for achieving high-quality results. 
-          As shown in the figure below, our SDPose provides more accurate poses for the driving frames, 
-          enabling more reliable pose-sequence transfer from animations to animations. Video frames are generated by Moore-Animated Anyone.
-        </p>
-        
-        <!-- Video Generation Comparison Figure -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/Video.png" alt="Qualitative comparison for pose-controlled video generation in the wild" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>Qualitative comparison for pose-controlled video generation in the wild.</strong> The first row shows the source image and frames from the driving video. The second row shows output video frames generated from the pose sequence estimated by the baseline model DWPose, while the third row shows the results guided by our SDPose. Red boxes highlight failures in the generated video, and yellow boxes highlight errors in pose estimation.</p>
-            </div>
+        <div class="content section-text">
+          <p class="has-text-justified">
+            To complement HumanArt and enable OOD evaluation with matched content and labels, we translate all COCO val images into three artistic domains: Monet-style paintings with StyTR2, Ukiyo-e with CycleGAN, and color sketch with Nano Banana. We additionally build a corruption split inspired by ImageNet-C, with 13 corruption types spanning noise (Gaussian, shot, impulse), blur (defocus, glass, motion, zoom), weather (snow, fog, brightness), and digital distortions (contrast, pixelation, JPEG compression). Each image receives one uniformly sampled corruption at severity 3 under a fixed random seed. All subsets reuse the original COCO val annotations (bounding boxes and keypoints).
+          </p>
+
+          <figure class="paper-figure">
+            <img src="static/images/COCOOOD.jpg" alt="Illustration of the COCO-OOD dataset">
+            <figcaption>
+              <strong>Illustration of the COCO-OOD dataset.</strong>
+            </figcaption>
+          </figure>
+
+          <figure class="paper-figure">
+            <img src="static/images/COCOOOD_Full.jpg" alt="Style-transferred subsets of COCO-OOD">
+            <figcaption>
+              <strong>Visual illustration of the style-transferred subsets in the COCO-OOD benchmark.</strong> We create an OOD split of the COCO validation set by stylizing natural images into three distinct artistic domains: Monet (via StyTR2), Ukiyo-e (via CycleGAN), and Color-sketch (via Nano Banana), enabling comprehensive evaluation under diverse style shifts.
+            </figcaption>
+          </figure>
+
+          <div class="has-text-centered" style="margin-top: 1.5rem;">
+            <a href="https://drive.google.com/file/d/1T38S8gP406FGAoDmYv7eeThMWRLi3DkR/view?usp=sharing" target="_blank" rel="noopener noreferrer"
+               class="button is-dark is-rounded">
+              <span class="icon"><i class="fas fa-download"></i></span>
+              <span>Download COCO-OOD</span>
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End Zero-shot Downstream Applications Section -->
+  </section>
 
-<!-- Finetuning Protocol Section -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-2 has-text-centered">Finetuning Protocol</h2>
-      
-      <!-- Multi-scale Latent Features -->
-      <div class="content">
-        <h3 class="title is-4">Leveraging the Multi-scale Latent Features for Pose Estimation</h3>
-        <p class="has-text-justified">
-          In this paper, we directly leverage the multi-scale latent features of SD U-Net for the pose estimation task. 
-          The input image is encoded by the frozen SD-VAE encoder and then fed into the SD U-Net, from which we extract multi-scale features at the upsampling stage. 
-          These features serve as robust representations for downstream applications.
-        </p>
-      </div>
+  <section class="hero is-small" id="Results">
+    <div class="hero-body">
+      <div class="container" style="max-width: 1100px;">
+        <h2 class="title is-2 has-text-centered">Results</h2>
 
-      <!-- Information Bottleneck -->
-      <div class="content">
-        <h3 class="title is-4">Lightweight Heatmap Decoder Head</h3>
-        <p class="has-text-justified">
-          Stable Diffusion's U-Net outputs a 4-channel latent for the VAE through a single convolutional layer. 
-          In contrast, pose estimation requires K-channel heatmaps with K ≫ 4, making the 4-channel latent a severe information bottleneck. 
-          To address this, we replace the original 4-channel head with a lightweight heatmap decoder. 
-          The decoder consists of a deconvolution layer for upsampling, followed by two 1×1 convolutions that output K-channel heatmaps.
-          This modification removes the bottleneck and shortens the supervision path to keypoints.
-        </p>
-        
-        <!-- Training Pipeline Figure -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/SDUDPTrain.png" alt="Training Pipeline of SDPose" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>Training Pipeline of SDPose.</strong> The input RGB image is first encoded into the latent space by a pre-trained VAE. The U-Net is conditioned for multi-task learning via a class embedding. When the class label is set to [0,1], the U-Net predicts the reconstructed RGB latent; when set to [1,0], it produces features for heatmap prediction. The output layer of the U-Net is task-specific: the original convolutional output layer is retained for RGB latent reconstruction, while a lightweight heatmap decoder is used to process the U-Net's intermediate features for keypoint heatmap prediction.</p>
+        <div class="content section-text">
+          <p class="has-text-justified">
+            With only 40 training epochs on an SD-v2 backbone, SDPose-Body reaches 81.2 AP / 85.3 AR on COCO, on par with Sapiens-1B/2B while using 5&times; fewer epochs and a smaller backbone. Under domain shift, SDPose sets new state-of-the-art results on HumanArt and the COCO-OOD subsets. SDPose-Wholebody surpasses the parameter-matched Sapiens-1B on COCO-WholeBody and leads all COCO-OOD wholebody splits.
+          </p>
+
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th rowspan="2">Variant</th>
+                  <th rowspan="2">Model</th>
+                  <th rowspan="2">Pre-trained<br>Backbone</th>
+                  <th rowspan="2">Params</th>
+                  <th colspan="2">COCO</th>
+                  <th colspan="2">HumanArt</th>
+                  <th colspan="2">COCO-OOD<br>Monet</th>
+                  <th colspan="2">COCO-OOD<br>Ukiyo-e</th>
+                  <th colspan="2">COCO-OOD<br>Corruption</th>
+                </tr>
+                <tr>
+                  <th>AP</th><th>AR</th><th>AP</th><th>AR</th><th>AP</th><th>AR</th><th>AP</th><th>AR</th><th>AP</th><th>AR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="4" class="group-label">Body</td>
+                  <td>Sapiens-1B</td><td>Sapiens ViT</td><td>1.169B</td>
+                  <td>82.1</td><td>85.9</td><td>64.3</td><td>67.4</td><td>58.8</td><td>63.3</td><td>61.5</td><td>66.2</td><td>68.6</td><td>73.2</td>
+                </tr>
+                <tr>
+                  <td>Sapiens-2B</td><td>Sapiens ViT</td><td>2.163B</td>
+                  <td><b>82.2</b></td><td><b>86.0</b></td><td>69.6</td><td>72.2</td><td>59.6</td><td>64.0</td><td>62.3</td><td>66.8</td><td><b>70.3</b></td><td>74.8</td>
+                </tr>
+                <tr>
+                  <td>GenLoc</td><td>Stable Diffusion-v1.5</td><td>0.98B</td>
+                  <td>77.6</td><td>80.7</td><td>67.0</td><td>70.8</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td>
+                </tr>
+                <tr class="ours">
+                  <td><b>SDPose (Ours)</b></td><td>Stable Diffusion-v2</td><td>0.98B</td>
+                  <td>81.2</td><td>85.3</td><td><b>71.8</b></td><td><b>74.6</b></td><td><b>64.0</b></td><td><b>68.7</b></td><td><b>66.1</b></td><td><b>70.9</b></td><td>70.1</td><td><b>75.0</b></td>
+                </tr>
+                <tr>
+                  <td rowspan="3" class="group-label">Wholebody</td>
+                  <td>Sapiens-1B</td><td>Sapiens ViT</td><td>1.169B</td>
+                  <td>72.7</td><td>79.2</td><td>N/A</td><td>N/A</td><td>38.7</td><td>46.8</td><td>40.5</td><td>49.4</td><td>48.4</td><td>57.8</td>
+                </tr>
+                <tr>
+                  <td>Sapiens-2B</td><td>Sapiens ViT</td><td>2.163B</td>
+                  <td><b>74.4</b></td><td><b>81.0</b></td><td>N/A</td><td>N/A</td><td>44.4</td><td>53.0</td><td>46.6</td><td>55.8</td><td>52.8</td><td>62.5</td>
+                </tr>
+                <tr class="ours">
+                  <td><b>SDPose (Ours)</b></td><td>Stable Diffusion-v2</td><td>0.98B</td>
+                  <td>72.8</td><td>79.4</td><td>N/A</td><td>N/A</td><td><b>48.4</b></td><td><b>56.0</b></td><td><b>50.0</b></td><td><b>58.2</b></td><td><b>54.3</b></td><td><b>63.1</b></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-notes">
+              <p><strong>Quantitative comparison across COCO, HumanArt, COCO-OOD Monet, COCO-OOD Ukiyo-e, and COCO-OOD Corruption.</strong> All models are trained on COCO. HumanArt only provides 17-keypoint annotations. GenLoc results on WholeBody and some COCO-OOD subsets are unavailable because its model and code have not been publicly released. Full comparisons across more models are in the supplementary material of the paper.</p>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Auxiliary RGB Reconstruction -->
-      <div class="content">
-        <h3 class="title is-4">Auxiliary RGB Reconstruction</h3>
-        <p class="has-text-justified">
-          To preserve the fine-detail representation capability of diffusion priors and to avoid overfitting to the pose estimation domain, 
-          we adopt the <em>Detail Preserver</em> strategy. 
-          Concretely, we introduce a class embedding C ∈ {C<sub>RGB</sub>, C<sub>Pose</sub>} that controls the behavior of the denoising U-Net f<sub>θ</sub>. 
-          When C<sub>RGB</sub> is provided, the network is trained to reconstruct the RGB latent z<sub>RGB</sub>; 
-          when C<sub>Pose</sub> is provided, it learns to reconstruct the ground-truth heatmap H<sub>Pose</sub>. 
-          The overall objective is:
-        </p>
-        <div class="has-text-centered" style="margin: 1rem 0;">
-          <p><strong>L = ||z<sub>RGB</sub> - f<sub>θ</sub>(z<sub>input</sub>, t, C<sub>RGB</sub>)||² + ||H<sub>Pose</sub> - f<sub>θ</sub>(z<sub>input</sub>, t, C<sub>Pose</sub>)||²</strong></p>
-        </div>
-        <p class="has-text-justified">
-          where z<sub>input</sub> is the latent encoded from the input image by the SD-VAE, and t is fixed to t=1000 in our experiments.
-        </p>
-      </div>
+          <h3 class="title is-4" style="margin-top: 2.5rem;">Real-world Photographs</h3>
+          <figure class="paper-figure">
+            <img src="static/images/RealPhoto.jpg" alt="Qualitative results on real-world photographs">
+            <figcaption>
+              <strong>Qualitative results on real-world photographs.</strong> The yellow boxes highlight regions where baselines fail to predict accurate poses.
+            </figcaption>
+          </figure>
 
-      <!-- Inference -->
-      <div class="content">
-        <h3 class="title is-4">Inference</h3>
-        <p class="has-text-justified">
-          The input RGB image x is encoded by the SD-VAE into the latent representation z<sub>RGB</sub>. 
-          The latent diffusion U-Net then performs a single-step regression with the timestep fixed at t = 1000, 
-          using the class label C<sub>Pose</sub> to execute the pose estimation task. 
-          The text condition is disabled by feeding an empty text embedding to the U-Net.
-        </p>
-        
-        <!-- Inference Pipeline Figure -->
-        <div class="columns is-centered has-text-centered" style="margin-top: 2rem;">
-          <div class="column is-four-fifths">
-            <img src="static/images/SDUDPInference.png" alt="SDPose Inference Pipeline" style="max-width: 100%; height: auto; border-radius: 10px;">
-            <div class="table-notes" style="margin-top: 1rem; font-size: 0.9rem; color: #666666; text-align: left;">
-              <p><strong>SDPose Inference Pipeline.</strong> The input RGB image is encoded by the SD-VAE into the latent representation. The latent diffusion U-Net then performs a single-step regression with the timestep fixed at t = 1000, using the class label C<sub>Pose</sub> to execute the pose estimation task. The text condition is disabled by feeding an empty text embedding to the U-Net.</p>
-            </div>
-          </div>
+          <h3 class="title is-4" style="margin-top: 2.5rem;">Whole-body Estimation on Stylized Paintings</h3>
+          <figure class="paper-figure">
+            <img src="static/images/Anime.jpg" alt="Sapiens WholeBody versus SDPose WholeBody on stylized paintings">
+            <figcaption>
+              <strong>Comparison on Stylized Paintings: Sapiens WholeBody vs. SDPose WholeBody.</strong> All erroneous predictions are highlighted with yellow boxes. SDPose yields fewer false positives and notably better facial keypoint localization.
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End Finetuning Protocol Section -->
+  </section>
 
-<!--BibTex citation -->
+  <section class="hero is-light" id="Applications">
+    <div class="hero-body">
+      <div class="container" style="max-width: 1100px;">
+        <h2 class="title is-2 has-text-centered">Zero-shot Downstream Applications</h2>
+
+        <div class="content section-text">
+          <h3 class="title is-4">Better Pose-guided Image Generation</h3>
+          <p class="has-text-justified">
+            For human or humanoid character generation, an accurate skeleton is essential for transferring poses between characters. Traditional pose estimators often fail on art-based human or humanoid characters. Compared with DWPose as the pose annotator for ControlNet, SDPose yields more precise and detailed skeletons, enabling reliable pose transfer and high-quality image generation for artistic characters.
+          </p>
+          <figure class="paper-figure">
+            <img src="static/images/Controlnet.jpg" alt="Pose-guided image generation with ControlNet">
+            <figcaption>
+              <strong>Visualization of pose-guided image generation results.</strong> The lower images illustrate results from the baseline, which combines a pre-trained ControlNet with the DWPose estimator. In comparison, the upper images show results obtained using our SDPose as the pose annotator. Yellow boxes highlight baseline failures. Prompts, random seeds, and other settings are kept identical for fairness.
+            </figcaption>
+          </figure>
+
+          <h3 class="title is-4" style="margin-top: 2.5rem;">Pose-guided Video Generation</h3>
+          <p class="has-text-justified">
+            Extracting reliable control conditions remains critical for high-quality controlled video generation. SDPose provides more accurate poses for the driving frames, enabling reliable pose-sequence transfer from animations to animations. Video frames are generated by <a href="https://github.com/MooreThreads/Moore-AnimateAnyone" target="_blank" rel="noopener noreferrer">Moore-AnimateAnyone</a>.
+          </p>
+          <figure class="paper-figure">
+            <img src="static/images/Video.jpg" alt="Pose-controlled video generation in the wild">
+            <figcaption>
+              <strong>Qualitative comparison for pose-controlled video generation in the wild.</strong> The first row shows the source image and frames from the driving video. The second row shows output video frames generated from the pose sequence estimated by the baseline model DWPose, while the third row shows the results guided by our SDPose. Red boxes highlight failures in the generated video, and yellow boxes highlight errors in pose estimation.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>@misc{liang2025sdposeexploitingdiffusionpriors,
-      title={SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation}, 
-      author={Shuang Liang and Jing He and Chuanmeizhi Wang and Lejun Liao and Guo Zhang and Yingcong Chen and Yuan Yuan},
-      year={2025},
-      eprint={2509.24980},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2509.24980}, 
+      <pre><code>@inproceedings{liang2027sdpose,
+  title={SDPose: Exploiting Diffusion Priors for Out-of-Domain and Robust Pose Estimation},
+  author={Liang, Shuang and He, Jing and Wang, Chuanmeizhi and Liao, Lejun and Zhang, Guo and Chen, Yingcong and Yuan, Yuan},
+  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year={2027}
 }</code></pre>
     </div>
-</section>
-<!--End BibTex citation -->
-
+  </section>
 
   <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              Template: <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener noreferrer">Academic Project Page</a> /
+              <a href="https://nerfies.github.io" target="_blank" rel="noopener noreferrer">Nerfies</a>.
+              Licensed under <a rel="license noopener noreferrer" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
-
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
+  </footer>
 
   <script>
-    // 优化视频播放体验
-    document.addEventListener('DOMContentLoaded', function() {
-      const videos = document.querySelectorAll('video');
-      
-      videos.forEach(video => {
-        // 确保视频静音自动播放
-        video.muted = true;
-        video.playsInline = true;
-        
-        // 避免滚动时显示控制条
-        video.addEventListener('scroll', function() {
-          video.blur();
-        });
-        
-        // 鼠标进入时播放，离开时暂停
-        video.addEventListener('mouseenter', function() {
-          if (video.paused) {
-            video.play();
-          }
-        });
-        
-        // 点击视频时切换播放/暂停
-        video.addEventListener('click', function() {
-          if (video.paused) {
-            video.play();
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.play().catch(() => {});
           } else {
-            video.pause();
+            entry.target.pause();
           }
         });
-        
-        // 确保视频在视口内时播放
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              video.play().catch(e => console.log('Video autoplay prevented:', e));
-            } else {
-              video.pause();
-            }
-          });
-        }, { threshold: 0.5 });
-        
-        observer.observe(video);
-      });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('video').forEach(video => observer.observe(video));
     });
   </script>
-  </body>
-  </html>
+</body>
+</html>
